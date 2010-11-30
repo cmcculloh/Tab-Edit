@@ -13,7 +13,7 @@
 
 <p>
 Text for current tab:
-<input type="text" style="margin-bottom:5px;" id="new" onKeyUp="setTitle(document.getElementById('new').value)" >
+<input type="text" style="margin-bottom:5px;" id="newTitle" onKeyUp="TABDISPLAY.setTitle()" >
 </p>
 
 Alternate favicon:<br />
@@ -22,7 +22,7 @@ Alternate favicon:<br />
 
 <p>
 Custom favicon URL:<br />
-<input type="text" id="newFaviconURL"><br />
+<input type="text" id="newFaviconURL" onchange=""><br />
 <input type="button" onclick="TABDISPLAY.addFavicon();" value="Add Favicon">
 </p>
 
@@ -69,7 +69,11 @@ TABDISPLAY = {
 			DB.getFavicons();
 		}
 	}
-	, setTitle:function(str){
+	, setTitle:function(){
+		var str;
+
+		str = document.getElementById("newTitle").value;
+
 		chrome.tabs.executeScript(null, {code:'document.title = "' + str + '";'});
 	}
 	, changeFavicon:function(favNumber){
@@ -92,7 +96,6 @@ TABDISPLAY = {
 				, '" width="16px" />'
 				, '</a>'
 			);
-			console.dir(this.favicons[icon]);
 		}
 
 		div.innerHTML = html.join('');
@@ -153,8 +156,6 @@ DB = {
 
 				sql.push(');');
 
-				console.dir(transaction);
-				console.log('sql statement: ' + sql.join(''));
 				transaction.executeSql(sql.join(''));
 			}
 		});
@@ -169,7 +170,6 @@ DB = {
 				' (url) VALUES (?)'
 			];
 
-			console.log('sql statement: ' + sql.join(''));
 			tx.executeSql(sql.join(''), [url]);
 		});
 

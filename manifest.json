@@ -2,15 +2,13 @@
 	"name" : "Tab Edit",
 	"version" : "1.0",
 	"description" : "Easily change the favicon and title of your current tab",
-	"icons" : {
-		"16" : "icon.png",
+	"icons" : { "16" : "icon.png",
 		"32" : "icon_32.png",
 		"48" : "icon_48.png",
-		"128" : "icon_128.png"
-	},
+		"128" : "icon_128.png" },
 	"browser_action" : {
 		"default_icon" : "icon_32.png",
 		"popup" : "popup.html"
 	},
-	"permissions" : [ "tabs" ]
+	"permissions" : [ "tabs", "http://*/*" ]
 }
