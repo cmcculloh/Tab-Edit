@@ -1,0 +1,219 @@
+<head>
+<style>
+	body {
+		min-width:170px;
+		overflow-x:hidden;
+	}
+	a {
+		color:#666666;
+	}
+</style>
+</head>
+<body onload="document.getElementById('new').focus();">
+
+<p>
+Text for current tab:
+<input type="text" style="margin-bottom:5px;" id="new" onKeyUp="setTitle(document.getElementById('new').value)" >
+</p>
+
+Alternate favicon:<br />
+<div id="favicons">
+</div>
+
+<p>
+Custom favicon URL:<br />
+<input type="text" id="newFaviconURL"><br />
+<input type="button" onclick="TABDISPLAY.addFavicon();" value="Add Favicon">
+</p>
+
+<p>
+<input type="button" onclick="DB.restoreDefaults();" value="Restore Defaults">
+</p>
+
+<p>
+<a href="https://github.com/cmcculloh/Favicon-Changer">View the code</a>
+</p>
+
+<script type="text/javascript">
+
+
+
+TABDISPLAY = {
+	  faviconsDefault:["http://img9.imageshack.us/img9/7726/chromefavicon.png"
+				, "http://www.favicon.cc/favicon/651/184/favicon.png"
+				, "http://www.favicon.cc/favicon/637/184/favicon.png"
+				, "http://www.favicon.cc/favicon/635/184/favicon.png"
+				, "http://www.favicon.cc/favicon/173/164/favicon.png"
+				, "http://www.favicon.cc/favicon/436/163/favicon.png"
+				, "http://www.favicon.cc/favicon/375/146/favicon.png"
+				, "http://www.favicon.cc/favicon/779/141/favicon.png"
+				, "http://www.favicon.cc/favicon/627/133/favicon.png"
+				, "http://www.favicon.cc/favicon/438/132/favicon.png"
+				, "http://www.favicon.cc/favicon/836/114/favicon.png"
+				, "http://www.chomperstomp.com/changeFavicon/serena.png"]
+	, favicons:[]
+	, init:function(){
+		DB.getFavicons();
+	}
+	, prePopulate:function(){
+		if(TABDISPLAY.favicons.length < 1){
+			for(var favicon = 0, favicons = TABDISPLAY.faviconsDefault.length; favicon < favicons; favicon++){
+				DB.addFavicon(TABDISPLAY.faviconsDefault[favicon]);
+			}
+
+			DB.getFavicons();
+		}
+	}
+	, setTitle:function(str){
+		chrome.tabs.executeScript(null, {code:'document.title = "' + str + '";'});
+	}
+	, changeFavicon:function(favNumber){
+		chrome.tabs.executeScript(null, {file:'favicon.js'});
+		chrome.tabs.executeScript(null, {code:'favicon.change("' + TABDISPLAY.favicons[favNumber]["url"] + '");'});
+		return false;
+	}
+	, makeFaviconLinks:function(){
+		var div, link, html;
+
+		div = document.getElementById("favicons");
+
+		html = [""];
+		for(var icon = 0, icons = this.favicons.length; icon < icons; icon++){
+			html.push('<a href="#" onclick="TABDISPLAY.changeFavicon('
+				, icon
+				, ');">'
+				, '<img src="'
+				, this.favicons[icon]["url"]
+				, '" width="16px" />'
+				, '</a>'
+			);
+			console.dir(this.favicons[icon]);
+		}
+
+		div.innerHTML = html.join('');
+	}
+	, addFavicon:function(){
+		var favicon;
+
+		favicon = document.getElementById("newFaviconURL").value;
+
+		DB.addFavicon(favicon);
+		this.init();
+	}
+}
+
+DB = {
+	shortName:"favicons",
+	version: "1.0",
+	displayName:"Favicons",
+	maxSize:65536,
+	db:null,
+	tables:[
+		{
+			name:'favicons',
+			fields:[
+				{name:'id', structure:'INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT'},
+				{name:'url', structure:'TEXT NOT NULL'}
+			]
+		}
+	],
+	init:function(){
+		this.db = openDatabase(this.shortName,
+							   this.version,
+							   this.displayName,
+							   this.maxSize);
+
+		this.db.transaction(function(transaction){
+			var sql, table, field;
+
+			for(var tableNum = 0, numTables = DB.tables.length; tableNum < numTables; tableNum++){
+				table = DB.tables[tableNum];
+				sql = [
+					'CREATE TABLE IF NOT EXISTS ',
+					table.name,
+					' ('
+				];
+
+				for(var fieldNum = 0, numFields = table.fields.length; fieldNum < numFields; fieldNum++){
+					field = table.fields[fieldNum];
+
+					//separate fields with commas
+					if(fieldNum > 0){
+						sql.push(', ');
+					}
+
+					sql.push(field.name, ' ');
+					sql.push(field.structure);
+				}
+
+				sql.push(');');
+
+				console.dir(transaction);
+				console.log('sql statement: ' + sql.join(''));
+				transaction.executeSql(sql.join(''));
+			}
+		});
+	},
+	addFavicon:function(url){
+		this.db.transaction(function(tx){
+			var sql, table, field;
+
+			sql = [
+				'INSERT INTO ',
+				DB.tables[0].name,
+				' (url) VALUES (?)'
+			];
+
+			console.log('sql statement: ' + sql.join(''));
+			tx.executeSql(sql.join(''), [url]);
+		});
+
+	},
+	getFavicons:function(){
+		this.db.transaction(function(tx){
+			tx.executeSql("SELECT * FROM favicons", [], function(tx, result) {
+				if(result.rows.length > 0){
+					TABDISPLAY.favicons = [];
+
+					for (var i = 0; i < result.rows.length; ++i) {
+						var row = result.rows.item(i);
+
+						console.dir(row);
+
+						TABDISPLAY.favicons.push(row);
+					}
+
+					TABDISPLAY.makeFaviconLinks();
+				}else{
+					TABDISPLAY.prePopulate();
+				}
+			}, function(tx, error) {
+				alert('Failed to retrieve scores from database - ' + error.message);
+				return;
+			});
+		});
+	},
+	removeFavicon:function(id){
+		this.db.transaction(function(tx){
+			tx.executeSql("DELETE FROM favicons WHERE id = ?", [id]);
+		});
+
+		DB.getFavicons();
+	},
+	restoreDefaults:function(){
+		this.db.transaction(function(tx){
+			tx.executeSql("DELETE FROM favicons WHERE 1 = 1", []);
+		});
+
+		TABDISPLAY.favicons = [];
+
+		DB.getFavicons();
+	}
+}
+
+DB.init();
+TABDISPLAY.init();
+
+</script>
+
+</body>

@@ -1,0 +1,14 @@
+{
+	"browser_action": {
+	  "default_icon": "icon.png",
+	  "popup": "popup.html"
+	},
+	"description": "Easily change the favicon and title of your current tab",
+	"icons": {
+	  "128": "icon_128.png",
+	  "48": "icon_48.png"
+	},
+	"name": "Tab Edit",
+	"permissions": [ "tabs", "http://*/*" ],
+	"version": "1.0"
+}
