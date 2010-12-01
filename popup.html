@@ -9,7 +9,7 @@
 	}
 </style>
 </head>
-<body onload="document.getElementById('new').focus();">
+<body onload="document.getElementById('newTitle').focus();">
 
 <p>
 Text for current tab:
@@ -268,7 +268,7 @@ DB = {
 								'UPDATE ',
 								DB.tables[1].name,
 								' SET titleText = ?, faviconId = ? WHERE host = ?'
-							];							
+							];
 						}else{
 							sql = [
 								'INSERT INTO ',
@@ -282,7 +282,7 @@ DB = {
 				});
 			}else{
 			}
-		});		
+		});
 	}
 	, restoreDefaults: function(){
 		this.db.transaction(function(tx){
