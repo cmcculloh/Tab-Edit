@@ -226,23 +226,28 @@ DB = {
 		chrome.tabs.getSelected(null, function(tab){
 			if(tab != undefined){
 				DB.db.transaction(function(tx){
-					tx.executeSql("SELECT * FROM preferences WHERE host = ? LIMIT 1"
+					tx.executeSql("SELECT * FROM preferences WHERE host = ?"
 									, [tab.url]
 									, function(tx, result) {
-						var row;
+						var row, faviconUrl;
 
 						if(result.rows.length > 0){
 							row = result.rows.item(0);
 
-							if(row.titleText != undefined && row.titletext != null){
+							if(row.titleText != undefined && row.titleText != null){
 								chrome.tabs.executeScript(null, {code:'document.title = "' + row.titleText + '";'});
 								TABDISPLAY.currentTitleText = row.titleText;
+								document.getElementById("newTitle").value = row.titleText;
 							}
 							if(row.faviconId != undefined && row.faviconId != null){
+								faviconUrl = TABDISPLAY.favicons[row.faviconId]["url"];
 								chrome.tabs.executeScript(null, {file:'favicon.js'});
-								chrome.tabs.executeScript(null, {code:'favicon.change("' + TABDISPLAY.favicons[faviconId]["url"] + '");'});
+								chrome.tabs.executeScript(null, {code:'favicon.change("' + faviconUrl + '");'});
 								TABDISPLAY.currentFaviconId = row.faviconId;
+
 							}
+						}else{
+							alert('test');
 						}
 					}, function(tx, error) {
 						return;
