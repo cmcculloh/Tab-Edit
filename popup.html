@@ -39,7 +39,7 @@ Custom favicon URL:<br />
 
 
 TABDISPLAY = {
-	  faviconsDefault:["http://img9.imageshack.us/img9/7726/chromefavicon.png"
+	  faviconsDefault: ["http://img9.imageshack.us/img9/7726/chromefavicon.png"
 				, "http://www.favicon.cc/favicon/651/184/favicon.png"
 				, "http://www.favicon.cc/favicon/637/184/favicon.png"
 				, "http://www.favicon.cc/favicon/635/184/favicon.png"
@@ -56,11 +56,14 @@ TABDISPLAY = {
 				, "http://www.chomperstomp.com/tabEdit/calcGreen.gif"
 				, "http://www.chomperstomp.com/tabEdit/calcPurple.gif"
 				, "http://www.chomperstomp.com/tabEdit/calc16.gif"]
-	, favicons:[]
-	, init:function(){
+	, favicons: []
+	, currentFaviconId: null
+	, currentTitleText: null
+	, init: function(){
 		DB.getFavicons();
+		DB.getPreferences();
 	}
-	, prePopulate:function(){
+	, prePopulate: function(){
 		if(TABDISPLAY.favicons.length < 1){
 			for(var favicon = 0, favicons = TABDISPLAY.faviconsDefault.length; favicon < favicons; favicon++){
 				DB.addFavicon(TABDISPLAY.faviconsDefault[favicon]);
@@ -69,19 +72,25 @@ TABDISPLAY = {
 			DB.getFavicons();
 		}
 	}
-	, setTitle:function(){
+	, setTitle: function(){
 		var str;
 
 		str = document.getElementById("newTitle").value;
 
 		chrome.tabs.executeScript(null, {code:'document.title = "' + str + '";'});
+
+		this.currentTitleText = str;
+		DB.savePreferences(this.currentTitleText, this.currentFaviconId);
 	}
-	, changeFavicon:function(favNumber){
+	, changeFavicon: function(favNumber){
 		chrome.tabs.executeScript(null, {file:'favicon.js'});
 		chrome.tabs.executeScript(null, {code:'favicon.change("' + TABDISPLAY.favicons[favNumber]["url"] + '");'});
+
+		this.currentFaviconId = favNumber;
+		DB.savePreferences(this.currentTitleText, this.currentFaviconId);
 		return false;
 	}
-	, makeFaviconLinks:function(){
+	, makeFaviconLinks: function(){
 		var div, link, html;
 
 		div = document.getElementById("favicons");
@@ -100,7 +109,7 @@ TABDISPLAY = {
 
 		div.innerHTML = html.join('');
 	}
-	, addFavicon:function(){
+	, addFavicon: function(){
 		var favicon;
 
 		favicon = document.getElementById("newFaviconURL").value;
@@ -111,25 +120,35 @@ TABDISPLAY = {
 }
 
 DB = {
-	shortName:"favicons",
-	version: "1.0",
-	displayName:"Favicons",
-	maxSize:65536,
-	db:null,
-	tables:[
-		{
-			name:'favicons',
-			fields:[
-				{name:'id', structure:'INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT'},
-				{name:'url', structure:'TEXT NOT NULL'}
+	  shortName: "favicons"
+	, version: "1.1"
+	, displayName: "Favicons"
+	, maxSize: 65536
+	, db: null
+	, tables: [
+		  {
+			  name: 'favicons'
+			, fields: [
+				  { name: 'id' , structure: 'INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT' }
+				, { name: 'url' , structure: 'TEXT NOT NULL' }
 			]
 		}
-	],
-	init:function(){
-		this.db = openDatabase(this.shortName,
-							   this.version,
-							   this.displayName,
-							   this.maxSize);
+		, {
+			  name: 'preferences'
+			, fields: [
+				  { name: 'id' , structure: 'INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT' }
+				, { name: 'host' , structure: 'TEXT NOT NULL' }
+				, { name: 'titleText' , structure: 'TEXT' }
+				, { name: 'faviconId' , structure: 'INTEGER' }
+			]
+		}
+
+	]
+	, init: function () {
+		this.db = openDatabase(this.shortName
+								, this.version
+								, this.displayName
+								, this.maxSize);
 
 		this.db.transaction(function(transaction){
 			var sql, table, field;
@@ -159,8 +178,8 @@ DB = {
 				transaction.executeSql(sql.join(''));
 			}
 		});
-	},
-	addFavicon:function(url){
+	}
+	, addFavicon: function(url) {
 		this.db.transaction(function(tx){
 			var sql, table, field;
 
@@ -172,9 +191,8 @@ DB = {
 
 			tx.executeSql(sql.join(''), [url]);
 		});
-
-	},
-	getFavicons:function(){
+	}
+	, getFavicons: function(){
 		this.db.transaction(function(tx){
 			tx.executeSql("SELECT * FROM favicons", [], function(tx, result) {
 				if(result.rows.length > 0){
@@ -193,19 +211,76 @@ DB = {
 					TABDISPLAY.prePopulate();
 				}
 			}, function(tx, error) {
-				alert('Failed to retrieve scores from database - ' + error.message);
 				return;
 			});
 		});
-	},
-	removeFavicon:function(id){
+	}
+	, removeFavicon: function(id){
 		this.db.transaction(function(tx){
 			tx.executeSql("DELETE FROM favicons WHERE id = ?", [id]);
 		});
 
 		DB.getFavicons();
-	},
-	restoreDefaults:function(){
+	}
+	, getPreferences: function () {
+		chrome.tabs.getSelected(null, function(tab){
+			if(tab != undefined){
+				DB.db.transaction(function(tx){
+					tx.executeSql("SELECT * FROM preferences WHERE host = ? LIMIT 1"
+									, [tab.url]
+									, function(tx, result) {
+						var row;
+
+						if(result.rows.length > 0){
+							row = result.rows.item(0);
+
+							if(row.titleText != undefined && row.titletext != null){
+								chrome.tabs.executeScript(null, {code:'document.title = "' + row.titleText + '";'});
+								TABDISPLAY.currentTitleText = row.titleText;
+							}
+							if(row.faviconId != undefined && row.faviconId != null){
+								chrome.tabs.executeScript(null, {file:'favicon.js'});
+								chrome.tabs.executeScript(null, {code:'favicon.change("' + TABDISPLAY.favicons[faviconId]["url"] + '");'});
+								TABDISPLAY.currentFaviconId = row.faviconId;
+							}
+						}
+					}, function(tx, error) {
+						return;
+					});
+				});
+			}
+		});
+	}
+	, savePreferences: function(titleText, faviconId){
+		chrome.tabs.getSelected(null, function(tab){
+			if(tab != undefined){
+				DB.db.transaction(function(tx){
+					tx.executeSql("SELECT * FROM preferences WHERE host = ?", [tab.url], function(tx, result) {
+						var row, sql, table, field;
+
+						if(result.rows.length > 0){
+							sql = [
+								'UPDATE ',
+								DB.tables[1].name,
+								' SET titleText = ?, faviconId = ? WHERE host = ?'
+							];							
+						}else{
+							sql = [
+								'INSERT INTO ',
+								DB.tables[1].name,
+								' (titleText, faviconId, host) VALUES (?, ?, ?)'
+							];
+						}
+
+						tx.executeSql(sql.join(''), [titleText, faviconId, tab.url]);
+					});
+				});
+			}else{
+				alert('poop');
+			}
+		});		
+	}
+	, restoreDefaults: function(){
 		this.db.transaction(function(tx){
 			tx.executeSql("DELETE FROM favicons WHERE 1 = 1", []);
 		});
