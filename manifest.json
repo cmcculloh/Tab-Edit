@@ -1,6 +1,6 @@
 {
 	"name" : "Tab Edit",
-	"version" : "1.1",
+	"version" : "1.1.1",
 	"description" : "Easily change the favicon and title of your current tab",
 	"icons" : { "16" : "icon.png",
 		"32" : "icon_32.png",
