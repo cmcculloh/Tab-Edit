@@ -1,6 +1,6 @@
 TABDISPLAY = {
 	  faviconsDefault:{
-		  "favicon.cc":[
+		/*  "favicon.cc":[
 			  "http://www.favicon.cc/favicon/651/184/favicon.png"
 			, "http://www.favicon.cc/favicon/637/184/favicon.png"
 			, "http://www.favicon.cc/favicon/635/184/favicon.png"
@@ -11,16 +11,36 @@ TABDISPLAY = {
 			, "http://www.favicon.cc/favicon/627/133/favicon.png"
 			, "http://www.favicon.cc/favicon/438/132/favicon.png"
 			, "http://www.favicon.cc/favicon/836/114/favicon.png"
+		]*/
+		  "favicon.cc":[
+			  "/favicons/facivoncc/651.184.favicon.png"
+			, "/favicons/facivoncc/637.184.favicon.png"
+			, "/favicons/facivoncc/635.184.favicon.png"
+			, "/favicons/facivoncc/173.164.favicon.png"
+			, "/favicons/facivoncc/436.163.favicon.png"
+			, "/favicons/facivoncc/375.146.favicon.png"
+			, "/favicons/facivoncc/779.141.favicon.png"
+			, "/favicons/facivoncc/627.133.favicon.png"
+			, "/favicons/facivoncc/438.132.favicon.png"
+			, "/favicons/facivoncc/836.114.favicon.png"
 		]
-		, "chomperstomp.com":[
+		/*, "chomperstomp.com":[
 			  "http://www.chomperstomp.com/tabEdit/serena.png"
 			, "http://www.chomperstomp.com/tabEdit/icon.png"
 			, "http://www.chomperstomp.com/tabEdit/calcRed.gif"
 			, "http://www.chomperstomp.com/tabEdit/calcGreen.gif"
 			, "http://www.chomperstomp.com/tabEdit/calcPurple.gif"
 			, "http://www.chomperstomp.com/tabEdit/calc16.gif"
+		]*/
+		, "chomperstomp.com":[
+			  "/favicons/serena.png"
+			, "/favicons/icon.png"
+			, "/favicons/calcRed.gif"
+			, "/favicons/calcGreen.gif"
+			, "/favicons/calcPurple.gif"
+			, "/favicons/calc16.gif"
 		]
-		, "google.com":[
+		/*, "google.com":[
 			  "http://img9.imageshack.us/img9/7726/chromefavicon.png"
 			, "http://www.chomperstomp.com/tabEdit/gIcons/alert-o16.png"
 			, "http://www.chomperstomp.com/tabEdit/gIcons/api-r16.png"
@@ -100,6 +120,87 @@ TABDISPLAY = {
 			, "http://www.chomperstomp.com/tabEdit/gIcons/transcription-p16.png"
 			, "http://www.chomperstomp.com/tabEdit/gIcons/webinar-br16.png"
 			, "http://www.chomperstomp.com/tabEdit/gIcons/wrench-lb16.png"
+		]*/
+		, "google.com":[
+			  "http://img9.imageshack.us/img9/7726/chromefavicon.png"
+			, "/favicons/gIcons/alert-o16.png"
+			, "/favicons/gIcons/api-r16.png"
+			, "/favicons/gIcons/articles-g16.png"
+			, "/favicons/gIcons/assorted_ads-y16.png"
+			, "/favicons/gIcons/babyblock-b16.png"
+			, "/favicons/gIcons/books-g16.png"
+			, "/favicons/gIcons/bullet_1-b16.png"
+			, "/favicons/gIcons/bullet_2-b16.png"
+			, "/favicons/gIcons/bullet_3-b16.png"
+			, "/favicons/gIcons/bullet_4-b16.png"
+			, "/favicons/gIcons/bullet_5-b16.png"
+			, "/favicons/gIcons/bullet_6-b16.png"
+			, "/favicons/gIcons/bullet_7-b16.png"
+			, "/favicons/gIcons/bullet_8-b16.png"
+			, "/favicons/gIcons/bullet_9-b16.png"
+			, "/favicons/gIcons/bullet_10-b16.png"
+			, "/favicons/gIcons/business_tower-p16.png"
+			, "/favicons/gIcons/chart-o16.png"
+			, "/favicons/gIcons/chat-b16.png"
+			, "/favicons/gIcons/checkmark-r16.png"
+			, "/favicons/gIcons/clapper-b16.png"
+			, "/favicons/gIcons/clock-y16.png"
+			, "/favicons/gIcons/controlpanel-p16.png"
+			, "/favicons/gIcons/copyright-b16.png"
+			, "/favicons/gIcons/coupon_tag-r16.png"
+			, "/favicons/gIcons/crate-br16.png"
+			, "/favicons/gIcons/directions_api-16.png"
+			, "/favicons/gIcons/epicenter-r16.png"
+			, "/favicons/gIcons/filedownload-y16.png"
+			, "/favicons/gIcons/filing_cabinet_search-g16.png"
+			, "/favicons/gIcons/forward_voicemail-b16.png"
+			, "/favicons/gIcons/geocoding_api-16.png"
+			, "/favicons/gIcons/gift-o16.png"
+			, "/favicons/gIcons/globe-b16.png"
+			, "/favicons/gIcons/heart-r16.png"
+			, "/favicons/gIcons/help_forum-o16.png"
+			, "/favicons/gIcons/house-r16.png"
+			, "/favicons/gIcons/house_ad-b16.png"
+			, "/favicons/gIcons/info-g16.png"
+			, "/favicons/gIcons/interactive_media_ads-16.png"
+			, "/favicons/gIcons/key-y16.png"
+			, "/favicons/gIcons/laptop-b16.png"
+			, "/favicons/gIcons/lightbulb-y16.png"
+			, "/favicons/gIcons/localbusiness-y16.png"
+			, "/favicons/gIcons/mail-lb16.png"
+			, "/favicons/gIcons/mobile_phone-16.gif"
+			, "/favicons/gIcons/money-16.gif"
+			, "/favicons/gIcons/music_2x8th-o16.png"
+			, "/favicons/gIcons/newspaper-o16.png"
+			, "/favicons/gIcons/nosign-b16.png"
+			, "/favicons/gIcons/one_number-g16.png"
+			, "/favicons/gIcons/padlock-b16.png"
+			, "/favicons/gIcons/paper_pencil-y16.png"
+			, "/favicons/gIcons/pencil-o16.png"
+			, "/favicons/gIcons/people-y16.png"
+			, "/favicons/gIcons/phone-lb16.png"
+			, "/favicons/gIcons/photos-r16.png"
+			, "/favicons/gIcons/pizza-o16.png"
+			, "/favicons/gIcons/plane-b16.png"
+			, "/favicons/gIcons/play-b16.png"
+			, "/favicons/gIcons/pointer-b16.png"
+			, "/favicons/gIcons/profiles-o16.png"
+			, "/favicons/gIcons/promoted_video-r16.png"
+			, "/favicons/gIcons/question-o16.png"
+			, "/favicons/gIcons/rss-o16.png"
+			, "/favicons/gIcons/ruler-y16.png"
+			, "/favicons/gIcons/screen_callers-g16.png"
+			, "/favicons/gIcons/screwdriver_wrench-16.gif"
+			, "/favicons/gIcons/search-b16.png"
+			, "/favicons/gIcons/star-16.gif"
+			, "/favicons/gIcons/star_video-r16.png"
+			, "/favicons/gIcons/target-16.gif"
+			, "/favicons/gIcons/target-b16.png"
+			, "/favicons/gIcons/toolbox-r16.png"
+			, "/favicons/gIcons/traffic_light-lb16.png"
+			, "/favicons/gIcons/transcription-p16.png"
+			, "/favicons/gIcons/webinar-br16.png"
+			, "/favicons/gIcons/wrench-lb16.png"
 		]
 	}
 	, favicons: []
@@ -111,7 +212,7 @@ TABDISPLAY = {
 	}
 	, prePopulate: function(){
 		if(TABDISPLAY.favicons.length < 1){
-			document.getElementById("favicons").innerHTML = '<p style="text-align:center"><img src="http://www.chomperstomp.com/tabEdit/ajax-loader.gif" /><br />loading...</p>';
+			document.getElementById("favicons").innerHTML = '<p style="text-align:center"><img src="/favicons/ajax-loader.gif" /><br />loading...</p>';
 
 			for(var faviconCategory in TABDISPLAY.faviconsDefault){
 				for(var favicon = 0, fcLength = TABDISPLAY.faviconsDefault[faviconCategory].length; favicon < fcLength; favicon++){
