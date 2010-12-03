@@ -1,0 +1,11 @@
+	body {
+		min-width:170px;
+		overflow-x:hidden;
+	}
+	a {
+		color:#666666;
+	}
+
+	#favicons img{border: 1px solid white;}
+	#favicons img:hover{border: 1px solid blue;}
+	#favicons img.current{border: 1px solid red;}
