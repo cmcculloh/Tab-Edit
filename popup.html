@@ -7,6 +7,10 @@
 	a {
 		color:#666666;
 	}
+
+	#favicons img{border: 1px solid white;}
+	#favicons img:hover{border: 1px solid blue;}
+	#favicons img.current{border: 1px solid red;}
 </style>
 </head>
 <body onload="document.getElementById('newTitle').focus();">
@@ -36,6 +40,10 @@ Custom favicon URL:<br />
 
 <script type="text/javascript">
 
+function gotoLink(event){
+  var href = event.currentTarget.href;
+  chrome.tabs.create({url: href});
+}
 
 
 TABDISPLAY = {
@@ -173,6 +181,14 @@ TABDISPLAY = {
 		DB.savePreferences(this.currentTitleText, this.currentFaviconId);
 	}
 	, changeFavicon: function(favNumber){
+		console.log('cfi: ' + this.currentFaviconId);
+		if(this.currentFaviconId != undefined && this.currentFaviconId != null){
+			document.getElementById('icon' + this.currentFaviconId).className = document.getElementById('icon' + this.currentFaviconId).className.replace(/\bcurrent\b/,'');	
+		}
+	
+		document.getElementById('icon' + favNumber).className += " current";
+		
+
 		chrome.tabs.executeScript(null, {file:'favicon.js'});
 		chrome.tabs.executeScript(null, {code:'favicon.change("' + TABDISPLAY.favicons[favNumber]["url"] + '");'});
 
@@ -193,18 +209,23 @@ TABDISPLAY = {
 				html.categories[category] = [""];
 			}
 
-			html.categories[category].push('<a href="#" onclick="TABDISPLAY.changeFavicon('
+			html.categories[category].push('<a href="#" '
+				, 'onclick="TABDISPLAY.changeFavicon('
 				, icon
 				, ');">'
 				, '<img src="'
 				, this.favicons[icon]["url"]
-				, '" width="16px" />'
+				, '" '
+				, 'id="icon'
+				, icon
+				, '" '
+				, 'width="16px" />'
 				, '</a>'
 			);
 		}
 
 		for(category in html.categories){
-			html.combined += '<p>' + category + ':<br />' + html.categories[category].join('') + "</p>";
+			html.combined += '<p><a href="http://' + category + '" onclick="gotoLink();">' + category + '</a>:<br />' + html.categories[category].join('') + "</p>";
 		}
 
 		div.innerHTML = html.combined;
