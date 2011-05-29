@@ -13,16 +13,16 @@ TABDISPLAY = {
 			, "http://www.favicon.cc/favicon/836/114/favicon.png"
 		]*/
 		  "favicon.cc":[
-			  "/favicons/facivoncc/651.184.favicon.png"
-			, "/favicons/facivoncc/637.184.favicon.png"
-			, "/favicons/facivoncc/635.184.favicon.png"
-			, "/favicons/facivoncc/173.164.favicon.png"
-			, "/favicons/facivoncc/436.163.favicon.png"
-			, "/favicons/facivoncc/375.146.favicon.png"
-			, "/favicons/facivoncc/779.141.favicon.png"
-			, "/favicons/facivoncc/627.133.favicon.png"
-			, "/favicons/facivoncc/438.132.favicon.png"
-			, "/favicons/facivoncc/836.114.favicon.png"
+			  "/favicons/faviconcc/651.184.favicon.png"
+			, "/favicons/faviconcc/637.184.favicon.png"
+			, "/favicons/faviconcc/635.184.favicon.png"
+			, "/favicons/faviconcc/173.164.favicon.png"
+			, "/favicons/faviconcc/436.163.favicon.png"
+			, "/favicons/faviconcc/375.146.favicon.png"
+			, "/favicons/faviconcc/779.141.favicon.png"
+			, "/favicons/faviconcc/627.133.favicon.png"
+			, "/favicons/faviconcc/438.132.favicon.png"
+			, "/favicons/faviconcc/836.114.favicon.png"
 		]
 		/*, "chomperstomp.com":[
 			  "http://www.chomperstomp.com/tabEdit/serena.png"
