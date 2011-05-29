@@ -21,6 +21,7 @@ Custom favicon URL:<br>
 
 <p>
 <input type="button" onclick="TABDISPLAY.restoreDefaults();" value="Restore Defaults">
+<p style="font-size: .8em;color: #888;">If the extension is not working, try clicking "Restore Defaults".</p>
 </p>
 
 <!--p>
@@ -29,8 +30,10 @@ Custom favicon URL:<br>
 
 <script src="/js/tabdisplay.js"></script>
 <script src="/js/db.js"></script>
+<script src="/favicon.js"></script>
 
 <script type="text/javascript">
+chrome.tabs.executeScript(null, {file:'favicon.js'});
 
 function gotoLink(event){
   var href = event.currentTarget.href;

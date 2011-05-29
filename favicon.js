@@ -9,7 +9,7 @@
 //     To stop the animation, call change() and pass in the new arg.
 //     (Optional 2nd arg is animation pause in millis, overwrites the default.)
 // * favicon.defaultPause = 5000;
-var favicon = {
+;var favicon = {
 
 // -- "PUBLIC" ----------------------------------------------------------------
 
@@ -21,18 +21,23 @@ change: function(iconURL, optionalDocTitle) {
     document.title = optionalDocTitle;
   }
   this.addLink(iconURL, true);
+  console.log("change: " + iconURL);
 },
 
 animate: function(iconSequence, optionalDelay) {
   this.preloadIcons(iconSequence);
   this.iconSequence = iconSequence;
   this.sequencePause = (optionalDelay) ?  optionalDelay : this.defaultPause;
-  favicon.index = 0;
-  favicon.change(iconSequence[0]);
-  this.loopTimer = setInterval(function() {
-    favicon.index = (favicon.index+1) % favicon.iconSequence.length;
-    favicon.addLink(favicon.iconSequence[favicon.index], false);
-  }, favicon.sequencePause);
+  if(typeof favicon != undefined){
+    favicon.index = 0;
+    favicon.change(iconSequence[0]);
+    this.loopTimer = setInterval(function() {
+      favicon.index = (favicon.index+1) % favicon.iconSequence.length;
+      favicon.addLink(favicon.iconSequence[favicon.index], false);
+    }, favicon.sequencePause);    
+  }else{
+    console.log("favicon is undefined");
+  }
 },
 
 // -- "PRIVATE" ---------------------------------------------------------------
@@ -68,6 +73,7 @@ removeLinkIfExists: function() {
 
 docHead:document.getElementsByTagName("head")[0]
 }
+
 
 // BACKGROUND
 // The main point of this script is to give you a means of alerting the user

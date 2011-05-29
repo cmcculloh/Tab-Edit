@@ -103,6 +103,7 @@ DB = {
 		DB.getFavicons();
 	}
 	, getPreferences: function () {
+		console.log('getPreferences');
 		chrome.tabs.getSelected(null, function(tab){
 			if(tab != undefined){
 				DB.db.transaction(function(tx){
@@ -120,11 +121,7 @@ DB = {
 								document.getElementById("newTitle").value = row.titleText;
 							}
 							if(row.faviconId != undefined && row.faviconId != null){
-								faviconUrl = TABDISPLAY.favicons[row.faviconId]["url"];
-								chrome.tabs.executeScript(null, {file:'favicon.js'});
-								chrome.tabs.executeScript(null, {code:'favicon.change("' + faviconUrl + '");'});
-								TABDISPLAY.currentFaviconId = row.faviconId;
-
+								TABDISPLAY.changeFavicon(row.faviconId);
 							}
 						}else{
 
